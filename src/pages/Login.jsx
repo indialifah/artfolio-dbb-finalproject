@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 const Login = () => {
 
@@ -19,14 +20,23 @@ const Login = () => {
       email: email,
       password: password,
     }
-    console.log(payload)
+    
+    axios
+      .post("https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/login", payload)
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((err) => {
+        console.log(err.response)
+      })
   }
 
 
   return (
     <div className='flex flex-row min-h-screen justify-center items-center'>
         <div className='bg-white bg-opacity-80 w-2/5 p-16 shadow-xl rounded-xl'>
-            <h1 className='text-5xl text-black font-medium text-center mb-16'>Artfolio</h1>
+            <h1 className='text-5xl text-black font-medium text-center'>Artfolio</h1>
+            <p className='text-black text-center py-10'>Please fill this form to log in to your account</p>
             <div className='flex flex-col gap-4 mb-10'>
                 
                 <input type="email" placeholder='E-mail' onChange={handleChangeEmail}
@@ -36,7 +46,7 @@ const Login = () => {
                 className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
 
                 <button type="submit" onClick={handleLogin}
-                className='py-3 bg-orange text-white hover:bg-peach hover:text-black font-medium rounded-md'>
+                className='my-4 py-3 bg-orange text-white hover:bg-peach hover:text-black font-medium rounded-md'>
                     Login
                 </button>
                 <div className="flex gap-1 justify-center md:text-sm text-xs">
