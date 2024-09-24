@@ -37,7 +37,7 @@ const Login = () => {
         <div className='bg-white bg-opacity-80 w-2/5 p-16 shadow-xl rounded-xl'>
             <h1 className='text-5xl text-black font-medium text-center'>Artfolio</h1>
             <p className='text-black text-center pt-10 pb-4'>Please fill this form to log in to your account</p>
-            <div className='flex flex-col gap-4 mb-10'>
+            <div className='flex flex-col gap-4'>
                 
                 <input type="email" placeholder='E-mail' onChange={handleChangeEmail}
                 className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
