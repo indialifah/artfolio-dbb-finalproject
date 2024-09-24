@@ -36,7 +36,7 @@ const Login = () => {
     <div className='flex flex-row min-h-screen justify-center items-center'>
         <div className='bg-white bg-opacity-80 w-2/5 p-16 shadow-xl rounded-xl'>
             <h1 className='text-5xl text-black font-medium text-center'>Artfolio</h1>
-            <p className='text-black text-center py-10'>Please fill this form to log in to your account</p>
+            <p className='text-black text-center pt-10 pb-4'>Please fill this form to log in to your account</p>
             <div className='flex flex-col gap-4 mb-10'>
                 
                 <input type="email" placeholder='E-mail' onChange={handleChangeEmail}
