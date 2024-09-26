@@ -22,19 +22,22 @@ const Navbar = () => {
               </div>
             
               {isOpen && (
-                <div className="absolute top-14 left-0 w-36 bg-white shadow-md rounded-md">
+                <div className="absolute top-16 left-0 w-36 bg-white shadow-2xl rounded-md">
                   <ul className="flex flex-col items-left space-y-4 p-4">
-                    <li className="hover:text-blue-500 cursor-pointer">Home</li>
-                    <li className="hover:text-blue-500 cursor-pointer">Explore</li>
-                    <li className="hover:text-blue-500 cursor-pointer">My Profile</li>
-                    <li className="hover:text-red-500 cursor-pointer">Logout</li>
+                    <li className="font-medium hover:text-teal cursor-pointer">Home</li>
+                    <li className="font-medium hover:text-teal cursor-pointer">Explore</li>
+                    <li className="font-medium hover:text-teal cursor-pointer">My Profile</li>
+                    <li className="font-medium hover:text-orange cursor-pointer">Logout</li>
                   </ul>
                 </div>
               )}
-              <h1>Logo</h1>
+              <h1 className='font-bold text-2xl text-black leading-6'>Logo</h1>
             </div>
             <div>
-                <div className='w-6 h-6 bg-black rounded-full float-end cursor-pointer'></div>
+                <div className='w-8 h-8 border-4 border-solid border-black rounded-full float-end cursor-pointer flex flex-col gap-0.5'>
+                  <div className='w-3 h-3 ml-[5.5px] mt-0.5 bg-black rounded-full'></div>
+                  <div className='w-5 h-2 ml-0.5 bg-black rounded-t-full'></div>
+                </div>
             </div>
         </div>
 
