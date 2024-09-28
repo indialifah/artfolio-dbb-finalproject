@@ -41,6 +41,24 @@ const UserProfile = () => {
 
                 <hr className='my-6'/>
                 {/* User Bio */}
+                <div>
+                  {/* Bio */}
+                  <div>
+                    <p className='text-lg font-medium italic'>Bio</p>
+                    <p className='text-md'>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+                  </div>
+                  {/* Contacts: web, phoneNum */}
+                  <div className='flex gap-4'>
+                    <a href="" className='underline font-semibold text-teal'>website hyperlink</a>
+                    <p>|</p>
+                    <a href='' className='underline font-semibold text-teal'>phone number</a>
+                  </div>
+                </div>
+
+                <hr className='my-6'/>
+
                 {/* User Gallery */}
             </div>
         </div>
