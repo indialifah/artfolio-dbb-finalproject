@@ -1,15 +1,17 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
+import Story from '../components/Story'
 
 const Home = () => {
   return (
     <div>
         {/* <Navbar /> */}
         <Sidebar />
+        <Story />
         
         {/* Container untuk timeline */}
-        <div className='mt-24 w-[60%] mx-auto'>
+        <div className='w-[60%] mx-auto'>
           {/* Ini satu Post */}
           <div className='bg-white shadow-lg rounded-md p-6 my-4'>
             <div className='flex flex-col gap-6'>
