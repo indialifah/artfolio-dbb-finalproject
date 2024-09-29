@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const Login = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const navigate = useNavigate()
 
   const handleChangeEmail = (e) => {
     setEmail(e.target.value)
@@ -21,10 +23,21 @@ const Login = () => {
       password: password,
     }
     
+    const config = {
+        headers: {
+          "Content-Type" : "application/json",
+          "apiKey" : 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b'
+      }
+  }
     axios
-      .post("https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/login", payload)
+      .post("https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/login", payload, config)
       .then((res) => {
         console.log(res.data)
+        localStorage.setItem('access_token', res?.data?.token)
+
+        setTimeout(() => {
+          navigate('/')
+        }, 3000)
       })
       .catch((err) => {
         console.log(err.response)
