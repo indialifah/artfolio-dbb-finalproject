@@ -9,7 +9,7 @@ const UserProfile = () => {
         <Sidebar />
 
         {/* Container */}
-        <div className='mt-24 w-[60%] mx-auto'>
+        <div className='mt-10 w-[60%] mx-auto'>
             <div className='bg-white shadow-lg rounded-md p-6 my-4'>
                 {/* User Profile */}
                 <div className='flex justify-between'>
