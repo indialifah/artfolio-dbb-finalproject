@@ -1,10 +1,12 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
+import Sidebar from '../components/Sidebar'
 
 const Home = () => {
   return (
     <div>
-        <Navbar />
+        {/* <Navbar /> */}
+        <Sidebar />
         
         {/* Container untuk timeline */}
         <div className='mt-24 w-[60%] mx-auto'>
