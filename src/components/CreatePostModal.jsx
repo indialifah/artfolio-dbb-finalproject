@@ -3,7 +3,6 @@ import { MdClose } from "react-icons/md";
 
 const CreatePostModal = ({ closeModal }) => {
 
-    
     const [image, setImage] = useState(null)
     const [caption, setCaption] = useState('')
 
@@ -19,8 +18,7 @@ const CreatePostModal = ({ closeModal }) => {
         if (e) { e.preventDefault() }
         
         // axios create post dsini deh pokoknya
-        closeModal();
-         
+        closeModal()
     }
 
   return (
@@ -61,7 +59,7 @@ const CreatePostModal = ({ closeModal }) => {
                     />
                     
                     <button type="submit" className='py-2 bg-orange text-white hover:bg-peach hover:text-black rounded-md'>
-                        Post
+                        Upload Post
                     </button>
                 </form>
                 
