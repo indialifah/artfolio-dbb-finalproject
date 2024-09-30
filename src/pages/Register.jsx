@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const Register = () => {
@@ -12,6 +12,8 @@ const Register = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [bio, setBio] = useState('')
   const [website, setWebsite] = useState('')
+
+  const [file, setFile] = useState(null)
   const [profilePicUrl, setProfilePicUrl] = useState('')
 
   const handleChangeName = (e) => {
@@ -38,8 +40,48 @@ const Register = () => {
   const handleChangeWebsite = (e) => {
     setWebsite(e.target.value)
   }
-  
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0])
+  };
+
+  const handleUpload = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    console.log("upload", file)
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "apiKey" : 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b'
+      },
+    }
+
+    // disini hit api uload
+    const formData = new FormData()
+    formData.append("image", file)
+    axios
+      .post(
+        "https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/upload-image",
+        formData,
+        config
+      )
+      .then((res) => {
+        console.log(res)
+        setProfilePicUrl(res?.data?.url);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  useEffect(() => {
+    if (file) {
+      handleUpload();
+    }
+  }, [file]);
+  
   const handleRegister = () => {
     const payload = {
       name: name,
@@ -66,6 +108,7 @@ const Register = () => {
         console.log(payload)
         console.log(res.data)
         // add success toast redirect to login
+        
       })
       .catch((err) => {
         console.log(err.response)
@@ -114,14 +157,14 @@ const Register = () => {
                         htmlFor="file-upload"
                         className="block rounded-md p-2 w-full text-gray-400 bg-white border-2 border-gray-200 cursor-pointer focus:outline-none focus:border-orange text-left"
                       >
-                        {/* {fileName || 'Profile Picture'} Placeholder text */}
-                        Profile Picture
+                        {profilePicUrl || 'Profile Picture'} 
+                        
                       </label>
                       <input
                         id="file-upload"
                         type="file"
                         className="absolute top-0 left-0 opacity-0 w-full h-full cursor-pointer"
-                        // onChange={handleFileChange}
+                        onChange={handleFileChange}
                       />
                 </div>
 
