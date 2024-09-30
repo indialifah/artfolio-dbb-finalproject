@@ -6,34 +6,42 @@ import { MdAddCircle } from "react-icons/md";
 import { MdAddToPhotos } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import CreatePostModal from './CreatePostModal';
+import CreateStoryModal from './CreateStoryModal';
 
 const Sidebar = () => {
 
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
-  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
+  const [isCreateStoryModalOpen, setIsCreateStoryModalOpen] = useState(false)
+
+  const openCreateStoryModal = () => {
+    setIsCreateStoryModalOpen(true)
+  }
+  const closeCreateStoryModal = () => {
+    setIsCreateStoryModalOpen(false)
+  }
 
   const openCreatePostModal = () => {
     setIsCreatePostModalOpen(true);
     // console.log('modal muncul')
-  };
+  }
   const closeCreatePostModal = () => {
     setIsCreatePostModalOpen(false);
-  };
+  }
 
   const openLogoutModal = () => {
     setIsLogoutModalOpen(true);
-  };
-
+  }
   const closeLogoutModal = () => {
     setIsLogoutModalOpen(false);
-  };
+  }
 
   const handleLogout = () => {
     console.log('User logged out');
     // toast success logout
     closeLogoutModal();
     localStorage.clear()
-  };
+  }
 
   return (
     <div className='fixed top-0 left-0 h-full w-1/6 bg-white p-6 shadow-lg '>
@@ -50,7 +58,7 @@ const Sidebar = () => {
                     <CgProfile className='text-3xl text-black'/>
                     <p className='text-black font-medium leading-7'>My Profile</p>
                 </Link>
-                <div className='flex gap-2 p-2 cursor-pointer hover:bg-sand active:bg-peach rounded-md'>
+                <div onClick={openCreateStoryModal} className='flex gap-2 p-2 cursor-pointer hover:bg-sand active:bg-peach rounded-md'>
                     <MdAddCircle className='text-3xl text-black'/>
                     <p className='text-black font-medium leading-7'>Create New Story</p>
                 </div>
@@ -84,6 +92,10 @@ const Sidebar = () => {
 
         {isCreatePostModalOpen && (
             <CreatePostModal closeModal={closeCreatePostModal} />
+        )}
+
+        {isCreateStoryModalOpen && (
+            <CreateStoryModal closeModal={closeCreateStoryModal}/>
         )}
     </div>
   )
