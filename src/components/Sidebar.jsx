@@ -5,10 +5,20 @@ import { IoMdLogOut } from "react-icons/io";
 import { MdAddCircle } from "react-icons/md";
 import { MdAddToPhotos } from "react-icons/md";
 import { Link } from 'react-router-dom';
+import CreatePostModal from './CreatePostModal';
 
 const Sidebar = () => {
 
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+
+  const openCreatePostModal = () => {
+    setIsCreatePostModalOpen(true);
+    // console.log('modal muncul')
+  };
+  const closeCreatePostModal = () => {
+    setIsCreatePostModalOpen(false);
+  };
 
   const openLogoutModal = () => {
     setIsLogoutModalOpen(true);
@@ -36,15 +46,15 @@ const Sidebar = () => {
                     <GoHome className='text-3xl text-black'/>
                     <p className='text-black font-medium leading-7'>Home</p>
                 </Link>
-                <Link to={'/myprofile'} className='flex gap-2 hover:bg-sand p-2 rounded-md active:bg-peach cursor-pointer'>
+                <Link to={'/userprofile'} className='flex gap-2 hover:bg-sand p-2 rounded-md active:bg-peach cursor-pointer'>
                     <CgProfile className='text-3xl text-black'/>
                     <p className='text-black font-medium leading-7'>My Profile</p>
                 </Link>
-                <div className='flex gap-2 p-2 cursor-pointer hover:bg-sand rounded-md'>
+                <div className='flex gap-2 p-2 cursor-pointer hover:bg-sand active:bg-peach rounded-md'>
                     <MdAddCircle className='text-3xl text-black'/>
                     <p className='text-black font-medium leading-7'>Create New Story</p>
                 </div>
-                <div className='flex gap-2 p-2 cursor-pointer hover:bg-sand rounded-md'>
+                <div onClick={openCreatePostModal}  className='flex gap-2 p-2 cursor-pointer hover:bg-sand active:bg-peach rounded-md'>
                     <MdAddToPhotos className='text-3xl text-black'/>
                     <p className='text-black font-medium leading-7'>Create New Post</p>
                 </div>
@@ -70,6 +80,10 @@ const Sidebar = () => {
                     </div>
                 </div>
             </div>
+        )}
+
+        {isCreatePostModalOpen && (
+            <CreatePostModal closeModal={closeCreatePostModal} />
         )}
     </div>
   )
