@@ -1,24 +1,91 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdClose } from "react-icons/md";
+import axios from 'axios';
 
 const CreatePostModal = ({ closeModal }) => {
 
     const [image, setImage] = useState(null)
+    const [imageUrl, setImageUrl] = useState('')
     const [caption, setCaption] = useState('')
-
-    const handleImageChange = (e) => {
-        setImage(e.target.files[0])
-    }
 
     const handleCaptionChange = (e) => {
         setCaption(e.target.value)
     }
 
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0])
+    }
+
+    const handleUpload = (e) => {
+        if (e) {
+          e.preventDefault();
+        }
+        console.log("upload", image)
+    
+        const config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "apiKey" : 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b',
+            "Authorization" : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImluZGlAZ21haWwuY29tIiwidXNlcklkIjoiNzM5YWEwZDUtNzZjYi00MzJmLThhOGUtZTQwZjQ5NDg3NjY5Iiwicm9sZSI6ImdlbmVyYWwiLCJpYXQiOjE3MjU3ODUxMTR9.FwhhNv2ll3q0BySqkOJB8BorSJh8nR31P7jDRQZxVnM'
+          },
+        }
+    
+        // disini hit api uload
+        const formData = new FormData()
+        formData.append("image", image)
+        axios
+        .post(
+            "https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/upload-image",
+            formData,
+            config
+        )
+        .then((res) => {
+            console.log(res)
+            setImageUrl(res?.data?.url)
+        
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+    
+    useEffect(() => {
+    if (image) {
+        handleUpload();
+    }
+    }, [image])
+
     const handleUploadPost = (e) => {
         if (e) { e.preventDefault() }
         
+        const payload = {
+            imageUrl: imageUrl,
+            caption: caption,
+        }
+
+        const config = {
+            headers: { 
+                'apiKey': 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b', 
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImluZGlAZ21haWwuY29tIiwidXNlcklkIjoiNzM5YWEwZDUtNzZjYi00MzJmLThhOGUtZTQwZjQ5NDg3NjY5Iiwicm9sZSI6ImdlbmVyYWwiLCJpYXQiOjE3MjU3ODUxMTR9.FwhhNv2ll3q0BySqkOJB8BorSJh8nR31P7jDRQZxVnM'
+            }
+        }
+
+        console.log('upload post', payload)
         // axios create post dsini deh pokoknya
-        closeModal()
+        axios
+        .post(
+            'https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/create-post',
+            payload,
+            config
+        )
+        .then((res) => {
+            console.log(res)
+            // toast success upload
+            closeModal()
+        })
+        .catch((err) => {
+            console.log(err.response)
+        })
     }
 
   return (
@@ -38,8 +105,8 @@ const CreatePostModal = ({ closeModal }) => {
                             htmlFor="file-upload"
                             className="block rounded-md p-2 w-full text-gray-400 bg-white border-2 border-gray-200 cursor-pointer focus:outline-none focus:border-orange text-left"
                         >
-                            {/* {profilePicUrl || 'Profile Picture'}  */}
-                            Choose Your Photo
+                            {imageUrl || 'Choose photo to be posted'} 
+                            
                         </label>
                         <input
                             id="file-upload"
