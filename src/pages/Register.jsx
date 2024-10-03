@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,6 +19,8 @@ const Register = () => {
   // const [profilePicUrl, setProfilePicUrl] = useState('')
 
   const [errors, setErrors] = useState({})
+
+  const navigate = useNavigate()
 
   // const handleChangeName = (e) => {
   //   setName(e.target.value)
@@ -127,6 +129,10 @@ const Register = () => {
         console.log(res.data)
         // add success toast redirect to login
         toast.success("Your account has been successfully created! 🎉") 
+
+        setTimeout(() => {
+          navigate('/')
+        }, 2000)
       })
       .catch((err) => {
         console.log(err.response)
