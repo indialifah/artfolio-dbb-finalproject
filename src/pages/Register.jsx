@@ -1,6 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
 
@@ -13,8 +15,8 @@ const Register = () => {
   const [bio, setBio] = useState('')
   const [website, setWebsite] = useState('')
 
-  const [file, setFile] = useState(null)
-  const [profilePicUrl, setProfilePicUrl] = useState('')
+  // const [file, setFile] = useState(null)
+  // const [profilePicUrl, setProfilePicUrl] = useState('')
 
   const handleChangeName = (e) => {
     setName(e.target.value)
@@ -41,46 +43,47 @@ const Register = () => {
     setWebsite(e.target.value)
   }
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0])
-  };
+  // const handleFileChange = (e) => {
+  //   setFile(e.target.files[0])
+  // };
 
-  const handleUpload = (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-    console.log("upload", file)
+  // const handleUpload = (e) => {
+  //   if (e) {
+  //     e.preventDefault();
+  //   }
+  //   console.log("upload", file)
 
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "apiKey" : 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b'
-      },
-    }
+  //   const config = {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //       "apiKey" : 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b',
+  //       "Authorization" : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImluZGlAZ21haWwuY29tIiwidXNlcklkIjoiNzM5YWEwZDUtNzZjYi00MzJmLThhOGUtZTQwZjQ5NDg3NjY5Iiwicm9sZSI6ImdlbmVyYWwiLCJpYXQiOjE3MjU3ODUxMTR9.FwhhNv2ll3q0BySqkOJB8BorSJh8nR31P7jDRQZxVnM'
+  //     },
+  //   }
 
-    // disini hit api uload
-    const formData = new FormData()
-    formData.append("image", file)
-    axios
-      .post(
-        "https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/upload-image",
-        formData,
-        config
-      )
-      .then((res) => {
-        console.log(res)
-        setProfilePicUrl(res?.data?.url);
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+  //   // disini hit api uload
+  //   const formData = new FormData()
+  //   formData.append("image", file)
+  //   axios
+  //     .post(
+  //       "https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/upload-image",
+  //       formData,
+  //       config
+  //     )
+  //     .then((res) => {
+  //       console.log(res)
+  //       setProfilePicUrl(res?.data?.url);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
 
-  useEffect(() => {
-    if (file) {
-      handleUpload();
-    }
-  }, [file]);
+  // useEffect(() => {
+  //   if (file) {
+  //     handleUpload();
+  //   }
+  // }, [file]);
   
   const handleRegister = () => {
     const payload = {
@@ -92,7 +95,7 @@ const Register = () => {
       phoneNumber: phoneNumber,
       bio: bio,
       website: website,
-      profilePictureUrl: profilePicUrl,
+      // profilePictureUrl: profilePicUrl,
     }
 
     const config = {
@@ -108,10 +111,12 @@ const Register = () => {
         console.log(payload)
         console.log(res.data)
         // add success toast redirect to login
-        
+        toast.success("Your account has been successfully created! 🎉") 
       })
       .catch((err) => {
         console.log(err.response)
+        toast.error("Register failed! Please try again.")
+        console.log(err?.response?.data?.errors?.message)
       })
   }
 
@@ -152,7 +157,7 @@ const Register = () => {
                 {/* <input type="file" src="" alt="profile pic" placeholder='Profile Picture'
                 className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/> */}
 
-                <div className="relative">
+                {/* <div className="relative">
                       <label
                         htmlFor="file-upload"
                         className="block rounded-md p-2 w-full text-gray-400 bg-white border-2 border-gray-200 cursor-pointer focus:outline-none focus:border-orange text-left"
@@ -166,7 +171,7 @@ const Register = () => {
                         className="absolute top-0 left-0 opacity-0 w-full h-full cursor-pointer"
                         onChange={handleFileChange}
                       />
-                </div>
+                </div> */}
 
                 <button type="submit" onClick={handleRegister}
                 className='mt-4 py-3 bg-orange text-white hover:bg-peach hover:text-black font-medium rounded-md'>
@@ -178,6 +183,8 @@ const Register = () => {
                 </div>
             </div>
         </div>
+
+        <ToastContainer className='rounded-xl' autoClose={2000}/>
     </div>
   )
 }
