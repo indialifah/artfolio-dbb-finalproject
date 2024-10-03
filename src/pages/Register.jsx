@@ -18,30 +18,32 @@ const Register = () => {
   // const [file, setFile] = useState(null)
   // const [profilePicUrl, setProfilePicUrl] = useState('')
 
-  const handleChangeName = (e) => {
-    setName(e.target.value)
-  }
-  const handleChangeUsername = (e) => {
-    setUsername(e.target.value)
-  }
-  const handleChangeEmail = (e) => {
-    setEmail(e.target.value)
-  }
-  const handleChangePassword = (e) => {
-    setPassword(e.target.value)
-  }
-  const handleChangePasswordRepeat = (e) => {
-    setPasswordRepeat(e.target.value)
-  }
-  const handleChangePhoneNumber = (e) => {
-    setPhoneNumber(e.target.value)
-  }
-  const handleChangeBio = (e) => {
-    setBio(e.target.value)
-  }
-  const handleChangeWebsite = (e) => {
-    setWebsite(e.target.value)
-  }
+  const [errors, setErrors] = useState({})
+
+  // const handleChangeName = (e) => {
+  //   setName(e.target.value)
+  // }
+  // const handleChangeUsername = (e) => {
+  //   setUsername(e.target.value)
+  // }
+  // const handleChangeEmail = (e) => {
+  //   setEmail(e.target.value)
+  // }
+  // const handleChangePassword = (e) => {
+  //   setPassword(e.target.value)
+  // }
+  // const handleChangePasswordRepeat = (e) => {
+  //   setPasswordRepeat(e.target.value)
+  // }
+  // const handleChangePhoneNumber = (e) => {
+  //   setPhoneNumber(e.target.value)
+  // }
+  // const handleChangeBio = (e) => {
+  //   setBio(e.target.value)
+  // }
+  // const handleChangeWebsite = (e) => {
+  //   setWebsite(e.target.value)
+  // }
 
   // const handleFileChange = (e) => {
   //   setFile(e.target.files[0])
@@ -86,6 +88,19 @@ const Register = () => {
   // }, [file]);
   
   const handleRegister = () => {
+    const newErrors = {}
+
+    if (!name) newErrors.name = 'Name is required'
+    if (!username) newErrors.username = 'Username is required'
+    if (!email) newErrors.email = 'Email is required'
+    if (!password) newErrors.password = "Password is required"
+    if (password !== passwordRepeat) newErrors.passwordRepeat = "Passwords do not match"
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+
     const payload = {
       name: name,
       username: username,
@@ -126,32 +141,51 @@ const Register = () => {
             <h1 className='text-5xl text-black font-medium text-center'>Artfolio</h1>
             <p className='text-black text-center pt-10 pb-4'>Please fill this form to register new account</p>
             <div className='flex flex-col gap-4'>
-                    <input type="text" placeholder='Name' onChange={handleChangeName} required
-                    className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
-                    
-                    <input type="text" placeholder='Username' onChange={handleChangeUsername} required
-                    className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
+                    <div>
+                      <input type="text" placeholder='Name' onChange={(e) => setName(e.target.value)} required
+                      className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
+                      {errors.name && <span className="text-red-500 text-sm">{errors.name}</span>}
+                    </div>
+                    <div>
+                      <input type="text" placeholder='Username' onChange={(e) => setUsername(e.target.value)} required
+                      className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
+                      {errors.username && <span className="text-red-500 text-sm">{errors.username}</span>}
+                    </div>
 
-                    <div className='grid grid-cols-2 gap-4'>
-                        <div className='flex flex-col gap-4'>
-                            <input type="email" placeholder='E-mail' onChange={handleChangeEmail} required
-                            className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
-                            
-                            <input type="password" placeholder='Password' onChange={handleChangePassword} required
-                            className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
-                            <input type="password" placeholder='Rewrite your password' onChange={handleChangePasswordRepeat} required
-                            className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
+                    <div className='flex flex-col gap-4'>
+                      <div className='grid grid-cols-2 gap-4'>
+                        <div>
+                          <input type="email" placeholder='E-mail' onChange={(e) => setEmail(e.target.value)} required
+                          className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
+                          {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
                         </div>
-                        <div className='flex flex-col gap-4'>
-                            <input type="text" placeholder='Phone Number' onChange={handleChangePhoneNumber}
-                            className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
-
-                            <input type="text" placeholder='Bio' onChange={handleChangeBio}
-                            className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
-
-                            <input type="text" placeholder='Website' onChange={handleChangeWebsite}
-                            className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
+                        <div>
+                          <input type="text" placeholder='Phone Number' onChange={(e) => setPhoneNumber(e.target.value)}
+                          className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
                         </div>
+                      </div>
+                      <div className='grid grid-cols-2 gap-4'>
+                        <div>
+                          <input type="password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} required
+                          className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
+                          {errors.password && <span className="text-red-500 text-sm">{errors.password}</span>}
+                        </div>
+                        <div>
+                          <input type="text" placeholder='Bio' onChange={(e) => setBio(e.target.value)}
+                          className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
+                        </div>
+                      </div>
+                      <div className='grid grid-cols-2 gap-4'>
+                          <div>
+                            <input type="password" placeholder='Rewrite your password' onChange={(e) => setPasswordRepeat(e.target.value)} required
+                            className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
+                            {errors.passwordRepeat && <span className="text-red-500 text-sm">{errors.passwordRepeat}</span>}
+                          </div>
+                          <div>
+                            <input type="text" placeholder='Website' onChange={(e) => setWebsite(e.target.value)}
+                            className='rounded-md p-2 w-[100%] focus:outline-none focus:border-orange border-2'/>
+                          </div>
+                      </div>
                     </div>
 
                 {/* <input type="file" src="" alt="profile pic" placeholder='Profile Picture'
