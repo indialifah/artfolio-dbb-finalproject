@@ -54,7 +54,7 @@ const Sidebar = () => {
                     <GoHome className='text-3xl text-black'/>
                     <p className='text-black font-medium leading-7'>Home</p>
                 </Link>
-                <Link to={'/userprofile'} className='flex gap-2 hover:bg-sand p-2 rounded-md active:bg-peach cursor-pointer'>
+                <Link to={'/myprofile'} className='flex gap-2 hover:bg-sand p-2 rounded-md active:bg-peach cursor-pointer'>
                     <CgProfile className='text-3xl text-black'/>
                     <p className='text-black font-medium leading-7'>My Profile</p>
                 </Link>
