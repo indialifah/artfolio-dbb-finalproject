@@ -3,6 +3,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Home from './pages/Home';
 import UserProfile from './pages/UserProfile';
+import MyProfile from './pages/MyProfile';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/' element={<Home />}/>
         <Route path='/userprofile' element={<UserProfile/>} />
+        <Route path='/myprofile' element={<MyProfile/>} />
       </Routes>
     </Router>
   )
