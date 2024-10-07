@@ -21,12 +21,13 @@ const CreatePostModal = ({ closeModal }) => {
           e.preventDefault();
         }
         console.log("upload", image)
-    
+        
+        const token = localStorage.getItem('access_token')
         const config = {
           headers: {
             "Content-Type": "multipart/form-data",
             "apiKey" : 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b',
-            "Authorization" : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImluZGlAZ21haWwuY29tIiwidXNlcklkIjoiNzM5YWEwZDUtNzZjYi00MzJmLThhOGUtZTQwZjQ5NDg3NjY5Iiwicm9sZSI6ImdlbmVyYWwiLCJpYXQiOjE3MjU3ODUxMTR9.FwhhNv2ll3q0BySqkOJB8BorSJh8nR31P7jDRQZxVnM'
+            "Authorization" : `Bearer ${token}`,
           },
         }
     
