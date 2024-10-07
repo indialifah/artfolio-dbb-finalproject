@@ -4,7 +4,7 @@ import { CgProfile } from "react-icons/cg";
 import { IoMdLogOut } from "react-icons/io";
 import { MdAddCircle } from "react-icons/md";
 import { MdAddToPhotos } from "react-icons/md";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CreatePostModal from './CreatePostModal';
 import CreateStoryModal from './CreateStoryModal';
 
@@ -13,6 +13,8 @@ const Sidebar = () => {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false)
   const [isCreateStoryModalOpen, setIsCreateStoryModalOpen] = useState(false)
+
+  const navigate = useNavigate()
 
   const openCreateStoryModal = () => {
     setIsCreateStoryModalOpen(true)
@@ -41,6 +43,9 @@ const Sidebar = () => {
     // toast success logout
     closeLogoutModal();
     localStorage.clear()
+    setTimeout(() => {
+      navigate('/login')
+    }, 2000)
   }
 
   return (
