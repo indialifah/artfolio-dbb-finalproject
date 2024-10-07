@@ -67,7 +67,7 @@ const Home = () => {
                         {/* user */}
                         <div className='flex justify-between'>
                           <div className='flex gap-4 cursor-pointer'>
-                            <img src={post.user?.profilePictureUrl} className='w-10 h-10 bg-peach rounded-full'></img>
+                            <img src={post.user?.profilePictureUrl} className='w-10 h-10 object-cover bg-peach rounded-full'></img>
                             <p className='text-lg leading-9'>{post.user?.username}</p>
                           </div>
                           {/* <div>
