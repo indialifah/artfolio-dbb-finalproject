@@ -78,9 +78,9 @@ const Home = () => {
                         <div className='flex gap-4'>
                           <div className='flex flex-col gap-6 w-3/5'>
                             <img src={post.imageUrl} className=' h-[400px] object-cover rounded-md border-[1px] border-solid border-gray-200'></img>
-                            <div className='flex gap-2 '>
-                              <span className='font-medium'>{post.user?.username}</span>
-                              <p>{post.caption}</p>
+                            <div>
+                              <span className='font-medium mr-2'>{post.user?.username}</span>
+                              <span>{post.caption}</span>
                             </div>
                             {/* likes comments */}
                             <div className='flex gap-8'>
