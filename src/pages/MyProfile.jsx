@@ -74,7 +74,7 @@ const MyProfile = () => {
                       </div>
                   </div>
                   <div>
-                    <div onClick={openEditProfileModal} className='leading-9 px-2 text-sm border-[1px] border-solid border-peach hover:bg-sand rounded-lg cursor-pointer'>Edit Profile</div>
+                    <div onClick={openEditProfileModal} className='leading-9 px-2 text-sm border-[1px] border-solid border-gray-300 hover:border-peach hover:bg-peach rounded-lg cursor-pointer'>Edit Profile</div>
                   </div>
                 </div>
 
@@ -100,9 +100,51 @@ const MyProfile = () => {
 
                 <hr className='my-6'/>
 
-                {/* User Gallery */}
+                {/* User Posts */}
                 <div>
-                  <p className='text-lg font-medium italic'>My Posts</p>
+                  <p className='text-lg font-medium italic mb-6'>My Posts</p>
+                  <div className='h-[640px] overflow-y-auto no-scrollbar bg-gray-50  px-4 shadow-inner'>
+                    <div key={''} className='bg-white border-1 border-solid border-teal shadow-md rounded-md p-6 my-4'>
+                      <div className='flex flex-col gap-6'>
+                          {/* user */}
+                          <div className='flex justify-between'>
+                            <div className='flex gap-4 cursor-pointer'>
+                              <img src={user?.profilePictureUrl} className='w-10 h-10 object-cover bg-peach rounded-full'></img>
+                              <p className='text-lg leading-9'>{user?.username}</p>
+                            </div>
+                            {/* <div>
+                              <p className='leading-9 px-2 text-sm border-[1px] border-solid border-black rounded-lg cursor-pointer'>followed</p>
+                            </div> */}
+                          </div>
+                          {/* photo */}
+                          <div className='flex gap-4'>
+                            <div className='flex flex-col gap-6 w-3/5'>
+                              <img src={''} className=' h-[400px] object-cover rounded-md border-[1px] border-solid border-gray-200'></img>
+                              <div>
+                                <span className='font-medium mr-2'>{user?.username}</span>
+                                <span>caption</span>
+                              </div>
+                              {/* likes comments */}
+                              <div className='flex gap-8'>
+                                <div className='flex gap-4'>
+                                  <div className='w-6 h-6 bg-orange rounded-full'></div>
+                                  <p>10K Likes</p>
+                                </div>
+                                <div className='flex gap-4'>
+                                  <div className='w-6 h-6 bg-orange rounded-full'></div>
+                                  <p>10K Comments</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div className='w-2/5 border-[1px] border-solid border-gray-200 rounded-md'>
+                              <p className=' mx-4 my-2'>Comment Section</p>
+                              <hr />
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  
                 </div>
             </div>
         </div>
