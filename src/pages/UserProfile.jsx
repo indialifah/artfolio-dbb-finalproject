@@ -1,11 +1,40 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
 const UserProfile = () => {
+
+  const token = localStorage.getItem('access_token')
+  const config = {
+    headers: {
+      'apiKey': 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b',
+      'Authorization': `Bearer ${token}`,
+    }
+  }
+
+  const { userId } = useParams()
+  const [user, setUser] = useState(null)
+  const [posts, setPosts] = useState({ posts: [], totalItems:0 })
+
+  const getUser = (userId) => {
+    axios
+    .get(`https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/user/${userId}`, config)
+    .then((res) => {
+      console.log("API Get User by ID response: ", res)
+      setUser(res?.data?.data)
+    })
+    .catch((err) => {
+      console.log(err.response)
+    })
+  }
+
+  useEffect(() => {
+    getUser(userId)
+  }, [userId])
+
   return (
     <div>
-        {/* <Navbar /> */}
         <Sidebar />
 
         {/* Container */}
@@ -14,11 +43,11 @@ const UserProfile = () => {
                 {/* User Profile */}
                 <div className='flex justify-between'>
                   <div className='flex gap-10'>
-                      <div className='w-36 h-36 bg-peach rounded-full'></div>
-                      <div  className='flex flex-col gap-6'>
+                      <img src={user?.profilePictureUrl} className='w-36 h-36 object-cover bg-peach rounded-full'></img>
+                      <div className='flex flex-col gap-6'>
                         <div>
-                          <p className='text-3xl font-bold text-black'>Name's gallery</p>
-                          <p className='text-xl text-black'>Username</p>
+                          <p className='text-3xl font-bold text-black'>{user?.name}</p>
+                          <p className='text-xl text-black'>{user?.username}</p>
                         </div>
                         <div className='flex gap-4'>
                           <div className='text-center'>
@@ -26,11 +55,11 @@ const UserProfile = () => {
                             <p>Posts</p>
                           </div>
                           <div className='text-center'>
-                            <p className='text-2xl font-light'>20K</p>
+                            <p className='text-2xl font-light'>{user?.totalFollowers}</p>
                             <p>Followers</p>
                           </div>
                           <div className='text-center'>
-                            <p className='text-2xl font-light'>10</p>
+                            <p className='text-2xl font-light'>{user?.totalFollowing}</p>
                             <p>Followings</p>
                           </div>
                         </div>
@@ -48,20 +77,37 @@ const UserProfile = () => {
                   <div>
                     <p className='text-lg font-medium italic'>Bio</p>
                     <p className='text-md'>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                      {user?.bio}
                     </p>
                   </div>
                   {/* Contacts: web, phoneNum */}
                   <div className='flex gap-4'>
-                    <a href="" className='underline font-semibold text-teal'>website hyperlink</a>
-                    <p>|</p>
-                    <a href='' className='underline font-semibold text-teal'>phone number</a>
+                    {user?.email && (
+                      <>
+                        <a href={`mailto:${user?.email}`} className='underline font-semibold text-teal'>{user?.email}</a>
+                        {(user?.website || user?.phoneNumber) && <p>|</p>}
+                      </>
+                    )}
+
+                    {user?.website && (
+                      <>
+                        <a href={user?.website} className='underline font-semibold text-teal'>{user?.website}</a>
+                        {user?.phoneNumber && <p>|</p>}
+                      </>
+                    )}
+
+                    {user?.phoneNumber && (
+                      <a href={`tel:${user?.phoneNumber}`} className='underline font-semibold text-teal'>{user?.phoneNumber}</a>
+                    )}
                   </div>
                 </div>
 
                 <hr className='my-6'/>
 
-                {/* User Gallery */}
+                {/* User Posts */}
+                <div>
+                  
+                </div>
             </div>
         </div>
     </div>
