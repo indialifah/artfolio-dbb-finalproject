@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Story from '../components/Story'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
 
@@ -66,10 +67,10 @@ const Home = () => {
                     <div className='flex flex-col gap-6'>
                         {/* user */}
                         <div className='flex justify-between'>
-                          <div className='flex gap-4 cursor-pointer'>
+                          <Link to={`/userprofile/${post?.user?.id}`} className='flex gap-4 cursor-pointer'>
                             <img src={post.user?.profilePictureUrl} className='w-10 h-10 object-cover bg-peach rounded-full'></img>
                             <p className='text-lg leading-9'>{post.user?.username}</p>
-                          </div>
+                          </Link>
                           {/* <div>
                             <p className='leading-9 px-2 text-sm border-[1px] border-solid border-black rounded-lg cursor-pointer'>followed</p>
                           </div> */}
