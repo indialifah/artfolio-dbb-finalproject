@@ -5,8 +5,32 @@ import EditProfileModal from '../components/EditProfileModal'
 
 const MyProfile = () => {
 
+  const token = localStorage.getItem('access_token')
+  const config = {
+    headers: {
+      'apiKey': 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b',
+      'Authorization': `Bearer ${token}`,
+    }
+  }
+
   const [user, setUser] = useState(null)
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false)
+  const [myPosts, setMyPosts] = useState({ posts: [], totalItems: 0})
+
+  const getMyPosts = (userId) => {
+    axios
+    .get(`https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/users-post/${userId}?size=30&page=1`, config)
+    .then((res) => {
+      console.log("API Get Post by User ID response", res)
+      setMyPosts({
+        posts: res?.data?.data?.posts,
+        totalItems:  res?.data?.data?.totalItems
+      })
+    })
+    .catch((err) => {
+      console.log("Error fetching posts: ", err?.response)
+    })
+  }
 
   const openEditProfileModal = () => {
     setIsEditProfileModalOpen(true)
@@ -17,20 +41,13 @@ const MyProfile = () => {
   }
 
   const getLoggedUser = () => {
-    
-    const token = localStorage.getItem('access_token')
-    const config = {
-      headers: {
-        'apiKey': 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b',
-        'Authorization': `Bearer ${token}`,
-      }
-    }
 
     axios
     .get('https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/user', config)
     .then((res) => {
-      console.log(res.data.data)
+      console.log("API Get Logged User response: ", res)
       setUser(res?.data?.data)
+      getMyPosts(res?.data?.data?.id)
     })
     .catch((err) => {
       console.log(err.response)
@@ -39,7 +56,7 @@ const MyProfile = () => {
 
   useEffect(() => {
     getLoggedUser()
-  })
+  }, [])
 
   return (
     <div>
@@ -59,7 +76,7 @@ const MyProfile = () => {
                         </div>
                         <div className='flex gap-4'>
                           <div className='text-center'>
-                            <p className='text-2xl font-light'>100</p>
+                            <p className='text-2xl font-light'>{myPosts.totalItems}</p>
                             <p>Posts</p>
                           </div>
                           <div className='text-center'>
@@ -90,11 +107,23 @@ const MyProfile = () => {
                   </div>
                   {/* Contacts: web, phoneNum */}
                   <div className='flex gap-4'>
-                    <a href='' className='underline font-semibold text-teal'>{user?.email}</a>
-                    <p>|</p>
-                    <a href='' className='underline font-semibold text-teal'>{user?.website}</a>
-                    <p>|</p>
-                    <a href='' className='underline font-semibold text-teal'>{user?.phoneNumber}</a>
+                    {user?.email && (
+                      <>
+                        <a href={`mailto:${user?.email}`} className='underline font-semibold text-teal'>{user?.email}</a>
+                        {(user?.website || user?.phoneNumber) && <p>|</p>}
+                      </>
+                    )}
+
+                    {user?.website && (
+                      <>
+                        <a href={user?.website} className='underline font-semibold text-teal'>{user?.website}</a>
+                        {user?.phoneNumber && <p>|</p>}
+                      </>
+                    )}
+
+                    {user?.phoneNumber && (
+                      <a href={`tel:${user?.phoneNumber}`} className='underline font-semibold text-teal'>{user?.phoneNumber}</a>
+                    )}
                   </div>
                 </div>
 
@@ -104,45 +133,51 @@ const MyProfile = () => {
                 <div>
                   <p className='text-lg font-medium italic mb-6'>My Posts</p>
                   <div className='h-[640px] overflow-y-auto no-scrollbar bg-gray-50  px-4 shadow-inner'>
-                    <div key={''} className='bg-white border-1 border-solid border-teal shadow-md rounded-md p-6 my-4'>
-                      <div className='flex flex-col gap-6'>
-                          {/* user */}
-                          <div className='flex justify-between'>
-                            <div className='flex gap-4 cursor-pointer'>
-                              <img src={user?.profilePictureUrl} className='w-10 h-10 object-cover bg-peach rounded-full'></img>
-                              <p className='text-lg leading-9'>{user?.username}</p>
-                            </div>
-                            {/* <div>
-                              <p className='leading-9 px-2 text-sm border-[1px] border-solid border-black rounded-lg cursor-pointer'>followed</p>
-                            </div> */}
-                          </div>
-                          {/* photo */}
-                          <div className='flex gap-4'>
-                            <div className='flex flex-col gap-6 w-3/5'>
-                              <img src={''} className=' h-[400px] object-cover rounded-md border-[1px] border-solid border-gray-200'></img>
-                              <div>
-                                <span className='font-medium mr-2'>{user?.username}</span>
-                                <span>caption</span>
-                              </div>
-                              {/* likes comments */}
-                              <div className='flex gap-8'>
-                                <div className='flex gap-4'>
-                                  <div className='w-6 h-6 bg-orange rounded-full'></div>
-                                  <p>10K Likes</p>
+                    { myPosts.posts
+                      ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort dari terbaru ke terlama
+                      ?.map((post) => (
+                        <div key={post.id} className='bg-white border-1 border-solid border-teal shadow-md rounded-md p-6 my-4'>
+                          <div className='flex flex-col gap-6'>
+                              {/* user */}
+                              <div className='flex justify-between'>
+                                <div className='flex gap-4 cursor-pointer'>
+                                  <img src={post?.user?.profilePictureUrl} className='w-10 h-10 object-cover bg-peach rounded-full'></img>
+                                  <p className='text-lg leading-9'>{post?.user?.username}</p>
                                 </div>
-                                <div className='flex gap-4'>
-                                  <div className='w-6 h-6 bg-orange rounded-full'></div>
-                                  <p>10K Comments</p>
+                                {/* <div>
+                                  <p className='leading-9 px-2 text-sm border-[1px] border-solid border-black rounded-lg cursor-pointer'>followed</p>
+                                </div> */}
+                              </div>
+                              {/* photo */}
+                              <div className='flex gap-4'>
+                                <div className='flex flex-col gap-6 w-3/5'>
+                                  <img src={post?.imageUrl} className=' h-[400px] object-cover rounded-md border-[1px] border-solid border-gray-200'></img>
+                                  <div>
+                                    <span className='font-medium mr-2'>{post?.user?.username}</span>
+                                    <span>{post?.caption}</span>
+                                  </div>
+                                  {/* likes comments */}
+                                  <div className='flex gap-8'>
+                                    <div className='flex gap-4'>
+                                      <div className='w-6 h-6 bg-orange rounded-full'></div>
+                                      <p>{post?.totalLikes} Likes</p>
+                                    </div>
+                                    <div className='flex gap-4'>
+                                      <div className='w-6 h-6 bg-orange rounded-full'></div>
+                                      <p>{post?.totalComments} Comments</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className='w-2/5 border-[1px] border-solid border-gray-200 rounded-md'>
+                                  <p className=' mx-4 my-2'>Comment Section</p>
+                                  <hr />
                                 </div>
                               </div>
-                            </div>
-                            <div className='w-2/5 border-[1px] border-solid border-gray-200 rounded-md'>
-                              <p className=' mx-4 my-2'>Comment Section</p>
-                              <hr />
-                            </div>
                           </div>
-                      </div>
-                    </div>
+                        </div>
+                      ))
+                    }
+                    
                   </div>
                   
                 </div>
