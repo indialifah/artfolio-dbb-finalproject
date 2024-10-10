@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar'
 import Story from '../components/Story'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import LoadingIcons from 'react-loading-icons'
 
 const Home = () => {
 
@@ -23,7 +24,7 @@ const Home = () => {
     }
 
     axios
-    .get('https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/explore-post?size=20&page=1', config)
+    .get('https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/explore-post?size=50&page=1', config)
     .then((res) => {
       console.log("API response: ", res)
       // console.log(res?.data?.data?.posts)
@@ -43,11 +44,19 @@ const Home = () => {
   }, [])
 
   if (loading) {
-    return <p>Loading...</p>
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingIcons.ThreeDots fill='#D35400' stroke='#D35400' speed={.75}/>
+      </div>
+    )
   }
 
   if (error) {
-    return <p>{error}</p>
+    return (
+      <div className="flex justify-center items-center h-screen text-center">
+        <p className='text-lg text-orange font-semibold'>Oops.. there is an error to our system!! <br />{error}</p>
+      </div>
+    )
   }
 
   return (
