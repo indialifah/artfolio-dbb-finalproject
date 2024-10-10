@@ -82,7 +82,7 @@ const UserProfile = () => {
                       </div>
                   </div>
                   <div>
-                    <p className='leading-9 px-2 text-sm border-[1px] border-solid border-black rounded-lg cursor-pointer'>Follow</p>
+                    <p className='leading-9 px-2 text-sm border-[1px] border-solid border-gray-300 hover:border-peach hover:bg-peach rounded-lg cursor-pointer'>Follow</p>
                   </div>
                 </div>
 
@@ -122,7 +122,7 @@ const UserProfile = () => {
 
                 {/* User Posts */}
                 <div>
-                  <p className='text-lg font-medium italic mb-6'>My Posts</p>
+                  <p className='text-lg font-medium italic mb-6'>Posts</p>
                   <div className='h-[640px] overflow-y-auto no-scrollbar bg-gray-50  px-4 shadow-inner'>
                     { posts.posts
                       ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort dari terbaru ke terlama
@@ -168,7 +168,6 @@ const UserProfile = () => {
                         </div>
                       ))
                     }
-                    
                   </div>
                 </div>
             </div>
