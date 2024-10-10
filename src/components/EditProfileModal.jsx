@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { MdClose } from "react-icons/md";
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const EditProfileModal = ({closeModal}) => {
+const EditProfileModal = ({closeModal, getLoggedUser}) => {
 
     const [image, setImage] = useState(null)
-    const [imageUrl, setImageUrl] = useState('')
+    const [profilePictureUrl, setProfilePictureUrl] = useState('')
+    const [name, setName] = useState('')
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [bio, setBio] = useState('')
+    const [website, setWebsite] = useState('')
 
     const handleImageChange = (e) => {
         setImage(e.target.files[0])
@@ -36,7 +44,7 @@ const EditProfileModal = ({closeModal}) => {
         )
         .then((res) => {
             console.log(res)
-            setImageUrl(res?.data?.url)
+            setProfilePictureUrl(res?.data?.url)
         
         })
         .catch((err) => {
@@ -45,9 +53,74 @@ const EditProfileModal = ({closeModal}) => {
     }
     useEffect(() => {
     if (image) {
-        handleUpload();
+        handleUpload()
     }
     }, [image])
+
+    const handleUpdateProfile = (e) => {
+        e.preventDefault()
+        const token = localStorage.getItem('access_token')
+        const config = {
+            headers: {
+              "apiKey" : 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b',
+              'Authorization': `Bearer ${token}`,
+            }
+        }
+        const payload = {
+            profilePictureUrl: profilePictureUrl,
+            name: name,
+            username: username,
+            email: email,
+            phoneNumber: phoneNumber,
+            bio: bio,
+            website: website,
+        }
+
+        axios
+        .post('https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/update-profile', payload, config)
+        .then((res) => {
+            console.log('API Update Profile response: ', res)
+            console.log('Profile Updated! ', payload)
+            toast.success("Your profile has been updated! 🌟")
+            getLoggedUser()
+            closeModal()
+        })
+        .catch((err) => {
+            console.log('Error Update Profile: ', err?.response)
+            toast.error("Update profile failed! Please try again.")
+        })
+    }
+
+    useEffect(() => {
+        const fetchUserProfile = () => {
+          const token = localStorage.getItem('access_token')
+          const config = {
+            headers: {
+              "apiKey": 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b',
+              "Authorization": `Bearer ${token}`
+            }
+          };
+      
+          axios
+            .get('https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/user', config)
+            .then((res) => {
+              const userData = res.data.data
+              setName(userData.name)
+              setUsername(userData.username)
+              setEmail(userData.email)
+              setPhoneNumber(userData.phoneNumber)
+              setBio(userData.bio)
+              setWebsite(userData.website)
+              setProfilePictureUrl(userData.profilePictureUrl)
+            })
+            .catch((err) => {
+              console.log('Error fetching user profile: ', err)
+            })
+        }
+      
+        fetchUserProfile()
+      }, [])
+      
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
@@ -60,13 +133,13 @@ const EditProfileModal = ({closeModal}) => {
             </div>
             <hr />
             <div className='px-12 py-10'>
-                <form onSubmit={''} className='flex flex-col gap-6'>
+                <form className='flex flex-col gap-6'>
                     <div className="relative">
                             <label
                                 htmlFor="file-upload"
                                 className="block rounded-md p-2 w-full text-gray-400 bg-white border-2 border-gray-200 cursor-pointer focus:outline-none focus:border-orange text-left"
                             >
-                                {imageUrl || 'Change Profile Picture'} 
+                                {profilePictureUrl || 'Change Profile Picture'} 
                                 
                             </label>
                             <input
@@ -78,61 +151,62 @@ const EditProfileModal = ({closeModal}) => {
                     </div>
 
                     <input 
-                        // value={name} 
-                        onChange={''} 
-                        placeholder='Name'
+                        value={name} 
+                        onChange={(e) => setName(e.target.value)} 
+                        // placeholder='Name'
                         rows="4" 
                         className='border-2 p-2 rounded-md focus:outline-none focus:border-orange' 
                         required 
                     />
                     <input 
-                        // value={username} 
-                        onChange={''} 
+                        value={username} 
+                        onChange={(e) => setUsername(e.target.value)} 
                         placeholder='Username'
                         rows="4" 
                         className='border-2 p-2 rounded-md focus:outline-none focus:border-orange' 
                         required 
                     />
                     <input 
-                        // value={email} 
-                        onChange={''} 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
                         placeholder='Email'
                         rows="4" 
                         className='border-2 p-2 rounded-md focus:outline-none focus:border-orange' 
                         required 
                     />
                     <input 
-                        // value={phoneNumber} 
-                        onChange={''} 
+                        value={phoneNumber} 
+                        onChange={(e) => setPhoneNumber(e.target.value)} 
                         placeholder='Phone Number'
                         rows="4" 
                         className='border-2 p-2 rounded-md focus:outline-none focus:border-orange' 
                         required 
                     />
                     <input 
-                        // value={bio} 
-                        onChange={''} 
+                        value={bio} 
+                        onChange={(e) => setBio(e.target.value)} 
                         placeholder='Bio'
                         rows="4" 
                         className='border-2 p-2 rounded-md focus:outline-none focus:border-orange' 
                         required 
                     />
                     <input 
-                        // value={website} 
-                        onChange={''} 
+                        value={website} 
+                        onChange={(e) => setWebsite(e.target.value)} 
                         placeholder='Website'
                         rows="4" 
                         className='border-2 p-2 rounded-md focus:outline-none focus:border-orange' 
                         required 
                     />
 
-                    <button type="submit" className='py-2 bg-orange text-white hover:bg-peach hover:text-black rounded-md'>
+                    <button type="button" onClick={handleUpdateProfile} className='py-2 bg-orange text-white hover:bg-peach hover:text-black rounded-md'>
                         Update Profile
                     </button>
                 </form>
                 
             </div>
         </div>
+        <ToastContainer className='rounded-xl' autoClose={2000}/>
     </div>
   )
 }
