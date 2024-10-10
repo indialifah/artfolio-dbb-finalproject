@@ -109,20 +109,20 @@ const MyProfile = () => {
                   <div className='flex gap-4'>
                     {user?.email && (
                       <>
-                        <a href={`mailto:${user?.email}`} className='underline font-semibold text-teal'>{user?.email}</a>
+                        <a href={`mailto:${user?.email}`} className='underline font-semibold text-teal hover:text-orange'>{user?.email}</a>
                         {(user?.website || user?.phoneNumber) && <p>|</p>}
                       </>
                     )}
 
                     {user?.website && (
                       <>
-                        <a href={user?.website} className='underline font-semibold text-teal'>{user?.website}</a>
+                        <a href={user?.website} className='underline font-semibold text-teal hover:text-orange'>{user?.website}</a>
                         {user?.phoneNumber && <p>|</p>}
                       </>
                     )}
 
                     {user?.phoneNumber && (
-                      <a href={`tel:${user?.phoneNumber}`} className='underline font-semibold text-teal'>{user?.phoneNumber}</a>
+                      <a href={`tel:${user?.phoneNumber}`} className='underline font-semibold text-teal hover:text-orange'>{user?.phoneNumber}</a>
                     )}
                   </div>
                 </div>
