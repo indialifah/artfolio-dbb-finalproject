@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import ViewFollowsModal from '../components/ViewFollowsModal'
 
 const UserProfile = () => {
 
@@ -11,6 +12,15 @@ const UserProfile = () => {
       'apiKey': 'c7b411cc-0e7c-4ad1-aa3f-822b00e7734b',
       'Authorization': `Bearer ${token}`,
     }
+  }
+
+  const [isViewFollowsModalOpen, setIsViewFollowsModalOpen] = useState(false)
+
+  const openViewFollowsModal = () => {
+    setIsViewFollowsModalOpen(true)
+  }
+  const closeViewFollowsModal = () => {
+    setIsViewFollowsModalOpen(false)
   }
 
   const { userId } = useParams()
@@ -70,11 +80,11 @@ const UserProfile = () => {
                             <p className='text-2xl font-light'>{posts?.totalItems}</p>
                             <p>Posts</p>
                           </div>
-                          <div className='text-center'>
+                          <div onClick={openViewFollowsModal} className='text-center cursor-pointer'>
                             <p className='text-2xl font-light'>{user?.totalFollowers}</p>
                             <p>Followers</p>
                           </div>
-                          <div className='text-center'>
+                          <div onClick={openViewFollowsModal} className='text-center cursor-pointer'>
                             <p className='text-2xl font-light'>{user?.totalFollowing}</p>
                             <p>Followings</p>
                           </div>
@@ -172,6 +182,10 @@ const UserProfile = () => {
                 </div>
             </div>
         </div>
+
+      {isViewFollowsModalOpen && (
+        <ViewFollowsModal closeModal={closeViewFollowsModal} userId={userId}/>
+      )}
     </div>
   )
 }
