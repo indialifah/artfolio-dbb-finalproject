@@ -13,6 +13,21 @@ const ViewFollowsModal = ({closeModal, userId}) => {
   }
 
   const [followers, setFollowers] = useState([])
+  const [followings, setFollowings] = useState([])
+
+  const getFollowings = () => {
+    axios
+    .get(`https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/following/${userId}?size=50&page=1`, config)
+    .then((res) => {
+        console.log("API Get Following by User ID response: ", res)
+        setFollowings(res?.data?.data?.users)
+        // console.log(following)
+    })
+    .catch((err) => {
+        console.log("Error fetching following: ", err?.response)
+    })
+  }
+
   const getFollowers = () => {
     axios
     .get(`https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/followers/${userId}?size=50&page=1`, config)
@@ -27,7 +42,8 @@ const ViewFollowsModal = ({closeModal, userId}) => {
   }
 
   useEffect(() => {
-    getFollowers()
+    getFollowers(), 
+    getFollowings()
   }, [userId])
 
   return (
@@ -41,7 +57,7 @@ const ViewFollowsModal = ({closeModal, userId}) => {
                     <h2 className='text-xl font-semibold px-12 py-6'>Followers</h2>
                     <hr />
                     {/* Followers List */}
-                    <div className='flex flex-col pl-20 h-[400px] overflow-y-auto no-scrollbar'>
+                    <div className='flex flex-col pl-20 pb-4 h-[400px] overflow-y-auto no-scrollbar'>
                         { followers.map((follower) => (
                             <div key={follower?.id} className='py-4 flex gap-2'>
                                 <img src={follower?.profilePictureUrl} className='w-8 h-8 object-cover bg-peach rounded-full'></img>
@@ -54,15 +70,13 @@ const ViewFollowsModal = ({closeModal, userId}) => {
                     <h2 className='text-xl font-semibold px-12 py-6'>Following</h2>
                     <hr />
                     {/* Following List */}
-                    <div className='flex flex-col pl-10 h-[400px] overflow-y-auto no-scrollbar'>
-                        <div className='py-4 flex gap-2'>
-                            <div className='w-8 h-8 object-cover bg-peach rounded-full'></div>
-                            <p className='leading-7'>username yg following</p>
-                        </div>
-                        <div className='py-4 flex gap-2'>
-                            <div className='w-8 h-8 object-cover bg-peach rounded-full'></div>
-                            <p className='leading-7'>username yg following</p>
-                        </div>
+                    <div className='flex flex-col pl-10 pb-4 h-[400px] overflow-y-auto no-scrollbar'>
+                        { followings.map((following) => (
+                            <div key={following?.id} className='py-4 flex gap-2'>
+                                <img src={following?.profilePictureUrl} className='w-8 h-8 object-cover bg-peach rounded-full'></img>
+                                <p className='leading-7'>{following?.username}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
