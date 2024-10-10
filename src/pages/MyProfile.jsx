@@ -185,7 +185,7 @@ const MyProfile = () => {
         </div>
 
         {isEditProfileModalOpen && (
-          <EditProfileModal closeModal={closeEditProfileModal} />
+          <EditProfileModal closeModal={closeEditProfileModal} getLoggedUser={getLoggedUser}/>
         )}
     </div>
   )
