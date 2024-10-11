@@ -14,7 +14,41 @@ const UserProfile = () => {
     }
   }
 
+  
+  const { userId } = useParams()
+  const [user, setUser] = useState(null)
+  const [posts, setPosts] = useState({ posts: [], totalItems:0 })
   const [isViewFollowsModalOpen, setIsViewFollowsModalOpen] = useState(false)
+  const [isFollowing, setIsFollowing] = useState(false)
+
+  const handleFollow = () => {
+    if (isFollowing) {
+      // Unfollow
+      axios
+      .delete(`https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/unfollow/${userId}`, config)
+      .then(() => {
+        console.log("API Unfollow")
+        setIsFollowing(false)
+      })
+      .catch((err) => {
+        console.log("Error unfollowing user: ", err?.response)
+      })
+    } else {
+      // Follow
+      const payload = {
+        userIdFollow: userId,
+      }
+      axios
+      .post('https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/follow', payload, config)
+      .then(() => {
+        console.log("API Follow")
+        setIsFollowing(true)
+      })
+      .catch((err) => {
+        console.log("Error following user: ", err?.response)
+      })
+    }
+  }
 
   const openViewFollowsModal = () => {
     setIsViewFollowsModalOpen(true)
@@ -22,11 +56,7 @@ const UserProfile = () => {
   const closeViewFollowsModal = () => {
     setIsViewFollowsModalOpen(false)
   }
-
-  const { userId } = useParams()
-  const [user, setUser] = useState(null)
-  const [posts, setPosts] = useState({ posts: [], totalItems:0 })
-
+  
   const getUserPost = (userId) => {
     axios
     .get(`https://photo-sharing-api-bootcamp.do.dibimbing.id/api/v1/users-post/${userId}?size=30&page=1`, config)
@@ -49,6 +79,7 @@ const UserProfile = () => {
       console.log("API Get User by ID response: ", res)
       setUser(res?.data?.data)
       getUserPost(res?.data?.data?.id)
+      setIsFollowing(res?.data?.data?.isFollowing)
     })
     .catch((err) => {
       console.log(err.response)
@@ -92,7 +123,9 @@ const UserProfile = () => {
                       </div>
                   </div>
                   <div>
-                    <p className='leading-9 px-2 text-sm border-[1px] border-solid border-gray-300 hover:border-peach hover:bg-peach rounded-lg cursor-pointer'>Follow</p>
+                    <p onClick={handleFollow} className='leading-9 px-2 text-sm border-[1px] border-solid border-gray-300 hover:border-peach hover:bg-peach rounded-lg cursor-pointer'>
+                      {isFollowing ? 'Followed' : 'Follow'}
+                    </p>
                   </div>
                 </div>
 
