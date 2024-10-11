@@ -129,7 +129,7 @@ const Register = () => {
                 </button>
                 <div className="flex gap-1 justify-center md:text-sm text-xs">
                     <p className='text-black'>Already have an account?</p>
-                    <Link to='/login' className="underline text-orange hover:text-peach cursor-pointer">Log in</Link>
+                    <Link to='/login' className="underline text-teal hover:text-orange cursor-pointer">Log in</Link>
                 </div>
             </div>
         </div>
