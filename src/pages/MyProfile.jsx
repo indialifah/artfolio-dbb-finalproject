@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import axios from 'axios'
 import EditProfileModal from '../components/EditProfileModal'
+import ViewFollowsModal from '../components/ViewFollowsModal'
 
 const MyProfile = () => {
 
@@ -14,8 +15,23 @@ const MyProfile = () => {
   }
 
   const [user, setUser] = useState(null)
-  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false)
   const [myPosts, setMyPosts] = useState({ posts: [], totalItems: 0})
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false)
+  const [isViewFollowsModalOpen, setIsViewFollowsModalOpen] = useState(false)
+
+  const openViewFollowsModal = () => {
+    setIsViewFollowsModalOpen(true)
+  }
+  const closeViewFollowsModal = () => {
+    setIsViewFollowsModalOpen(false)
+  }
+
+  const openEditProfileModal = () => {
+    setIsEditProfileModalOpen(true)
+  }
+  const closeEditProfileModal = () => {
+    setIsEditProfileModalOpen(false)
+  }
 
   const getMyPosts = (userId) => {
     axios
@@ -30,14 +46,6 @@ const MyProfile = () => {
     .catch((err) => {
       console.log("Error fetching posts: ", err?.response)
     })
-  }
-
-  const openEditProfileModal = () => {
-    setIsEditProfileModalOpen(true)
-  }
-
-  const closeEditProfileModal = () => {
-    setIsEditProfileModalOpen(false)
   }
 
   const getLoggedUser = () => {
@@ -79,11 +87,11 @@ const MyProfile = () => {
                             <p className='text-2xl font-light'>{myPosts.totalItems}</p>
                             <p>Posts</p>
                           </div>
-                          <div className='text-center'>
+                          <div onClick={openViewFollowsModal} className='text-center cursor-pointer'>
                             <p className='text-2xl font-light'>{user?.totalFollowers}</p>
                             <p>Followers</p>
                           </div>
-                          <div className='text-center'>
+                          <div onClick={openViewFollowsModal} className='text-center cursor-pointer'>
                             <p className='text-2xl font-light'>{user?.totalFollowing}</p>
                             <p>Following</p>
                           </div>
@@ -186,6 +194,10 @@ const MyProfile = () => {
 
         {isEditProfileModalOpen && (
           <EditProfileModal closeModal={closeEditProfileModal} getLoggedUser={getLoggedUser}/>
+        )}
+
+        {isViewFollowsModalOpen && (
+          <ViewFollowsModal closeModal={closeViewFollowsModal} userId={user?.id}/>
         )}
     </div>
   )
