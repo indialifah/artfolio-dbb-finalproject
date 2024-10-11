@@ -1,11 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom"
 
-const ProtectedRoute = ({childern}) => {
+const ProtectedRoute = ({children}) => {
     const token = localStorage.getItem('access_token')
 
     if (!token) {
         return <Navigate to={'/login'}/>
     }
 
-    return <>{childern || <Outlet />}</>
+    return <>{children || <Outlet />}</>
 }
+
+export default ProtectedRoute

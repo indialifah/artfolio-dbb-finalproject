@@ -1,3 +1,7 @@
+import Login from "../pages/Login"
+import Register from "../pages/Register"
+import Home from "../pages/Home"
+import MyProfile from "../pages/MyProfile"
 import UserProfile from "../pages/UserProfile"
 import ProtectedRoute from "./ProtectedRoute"
 
@@ -14,12 +18,12 @@ export const routeList = [
         path: '/myprofile',
         element: (
             <ProtectedRoute>
-                <Home />
+                <MyProfile />
             </ProtectedRoute>
         ),
     },
     {
-        path: '/userprofile',
+        path: '/userprofile/:userId',
         element: (
             <ProtectedRoute>
                 <UserProfile />
